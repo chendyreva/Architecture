@@ -1,0 +1,53 @@
+@startuml
+
+note top of server.ChatServer
+ChatServer
+end note
++class server.ChatServer {
+     ~ AuthService authService;
+     ~ Map<String, ClientHandler> clientHandlerMap = Collections.synchronizedMap(new HashMap<>());
+}
+
++class client.AuthException extends Exception {
+}
+
++interface server.auth.AuthService{
+ boolean authUser(User user);
+}
++class server.User {
+     ~ int id;
+     ~ String login;
+     ~ String password;
+}
+
++class client.TextMessage {
+    ~LocalDateTime created;
+    ~String userFrom;
+    ~String userTo;
+    ~String text;
+}
+
++class server.auth.AuthServiceJdbcImpl {
+~ final UserRepository userRepository;
+}
+
++class server.persistance.UserRepository {
+    private final Connection conn;
+}
+
+server.ChatServer ..> client.AuthException: use
+server.ChatServer ..> client.TextMessage: use
+server.ChatServer ..> server.auth.AuthService: use
+server.ChatServer ..> server.auth.AuthServiceJdbcImpl: use
+server.ChatServer ..> server.persistance.UserRepository: use
+server.ChatServer ..> client.MessagePatterns.AUTH_FAIL_RESPONSE: use
+server.ChatServer ..> client.MessagePatterns.AUTH_SUCCESS_RESPONSE: use
+
+server.auth.AuthService ..> server.User: use
+server.auth.AuthServiceJdbcImpl ..> server.auth.AuthService:use
+server.auth.AuthServiceJdbcImpl ..> server.User: use
+server.auth.AuthServiceJdbcImpl ..> server.persistance.UserRepository:use
+
+
+
+@enduml

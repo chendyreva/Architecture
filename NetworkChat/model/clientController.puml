@@ -1,0 +1,94 @@
+@startuml
++class client.AuthException extends Exception {
+
+}
+
++interface client.MessageReciever {
+    +void submitMessage(TextMessage message);
+    +void userConnected(String login);
+    +void userDisconnected(String login);
+    +void updateUserList(Set<String> users);
+}
+
++class client.Network implements Closeable {
+
+    ~String hostName;
+    ~int port;
+    ~MessageReciever messageReciever;
+    ~String login;
+    ~Thread receiverThread;
+
+    +Socket socket;
+    +DataInputStream in;
+    +DataOutputStream out;
+
+
+}
+
++class client.TextMessage {
+
+    ~LocalDateTime created;
+    ~String userFrom;
+    ~String userTo;
+    ~String text;
+
+}
+
++interface  client.history.ChatHistory{
+
+    +void addMessage(TextMessage message);
+    +List<TextMessage> getLastMessages(int count);
+    +void flush();
+}
+
++class client.MessagePatterns {
+    +static final String AUTH_TAG = "/auth";
+    +static final String AUTH_PATTERN = AUTH_TAG + " %s %s";
+    +static final String AUTH_SUCCESS_RESPONSE = AUTH_TAG + " successful";
+    +static final String AUTH_FAIL_RESPONSE = AUTH_TAG + " fail";
+    +static final String DISCONNECT = "/disconnect";
+    +static final String DISCONNECT_SEND = DISCONNECT + " %s";
+    +static final String CONNECTED = "/connected";
+    +static final String CONNECTED_SEND = CONNECTED + " %s";
+    +static final String USER_LIST_TAG = "/user_list";
+    +static final String USER_LIST_RESPONSE = USER_LIST_TAG + " %s";
+    +static final String MESSAGE_TAG = "/w";
+    +static final String MESSAGE_SEND_PATTERN = MESSAGE_TAG + " %s %s";
+    +static final Pattern MESSAGE_REC_PATTERN = Pattern.compile("^/w (\\w+) (.+)", Pattern.MULTILINE);
+}
+
+
+note top of javafx.controller.Controller
+javafx Controller
+end note
++class javafx.controller.Controller implements Initializable {
+
+     ~ObservableList<TextMessage> messageList;
+     ~ObservableList<String> userList;
+     ~Network network;
+     ~ChatHistory chatHistory;
+
+    +TextField tfMessage;
+    +ListView<TextMessage> lvMessages;
+    +Button btSendMessage;
+    +TextField loginField;
+    +PasswordField passField;
+    +HBox authPanel;
+    +HBox msgPanel;
+    +ListView<String> lvUserList;
+}
+
+
+
+javafx.controller.Controller ..> client.AuthException : use
+javafx.controller.Controller ..> client.TextMessage : use
+javafx.controller.Controller ..> client.MessageReciever : use
+javafx.controller.Controller ..> client.Network : use
+javafx.controller.Controller..> client.history.ChatHistory : use
+
+client.history.ChatHistory ..> client.TextMessage: use
+client.Network  ..>   client.MessagePatterns : use
+
+
+
+@enduml
