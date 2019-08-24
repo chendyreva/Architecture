@@ -1,0 +1,23 @@
+@startuml
+autonumber
+Ivan --> Petr : Authentication Request
+Ivan <-- Petr : Authentication Response
+Ivan --> Julia : Authentication Request
+Ivan <-- Julia : Authentication Response
+Julia --> Petr : Authentication Request
+Julia <-- Petr : Authentication Response
+
+autonumber 12
+Ivan -> Petr : Hello!
+Ivan <- Petr : Hi! How are you?
+
+autonumber 30 15
+Petr -> Julia : Do you go with us?
+Petr <- Julia : Let's go!
+
+autonumber 50 20
+Ivan -> Julia : Yghu, you go with us!
+Ivan <- Julia : Yeah!
+
+@enduml
+

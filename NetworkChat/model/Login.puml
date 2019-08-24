@@ -1,0 +1,21 @@
+@startuml
+autonumber
+note right of LoginServer: <back:cadetblue><size:24>Enter your login</size></back>
+
+LoginServer --> User:Enter your name :
+LoginServer <-- User: Ivan
+
+LoginServer --> User: Enter password :
+LoginServer <-- User: ***
+
+LoginServer --> User: Click on button "Login" or "Cancel" !
+
+LoginServer -> Server : Send data of user
+note right: Server connects with chat, but it gets an error
+LoginServer <- Server : Network Error ! Try again !
+
+note over User: User tries again...
+Server -> LoginServer : Authorization
+
+
+@enduml
