@@ -5,11 +5,13 @@ public class User {
     private int id;
     private String login;
     private String password;
+    private String city;
 
-    public User(int id, String login, String password) {
+    public User(int id, String login, String password, String city) {
         this.id = id;
         this.login = login;
         this.password = password;
+        this.city = city;
     }
 
     public int getId() {
@@ -22,5 +24,8 @@ public class User {
 
     public String getPassword() {
         return password;
+    }
+    public String getCity() {
+        return city;
     }
 }
