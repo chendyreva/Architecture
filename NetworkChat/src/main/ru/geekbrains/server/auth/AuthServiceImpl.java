@@ -10,9 +10,9 @@ public class AuthServiceImpl implements AuthService {
     public Map<String, String> users = new HashMap<>();
 
     public AuthServiceImpl() {
-        users.put("Ivan", "123");
-        users.put("Petr", "345");
-        users.put("Julia", "789");
+        users.put("Ivan", "Serebrinnikov", "123");
+        users.put("Petr","Shakovsky", "345");
+        users.put("Julia", "Roberts", "789");
     }
 
     @Override

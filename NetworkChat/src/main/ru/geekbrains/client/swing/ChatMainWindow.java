@@ -5,6 +5,7 @@ import ru.geekbrains.client.Network;
 import ru.geekbrains.client.TextMessage;
 import ru.geekbrains.client.history.ChatHistory;
 import ru.geekbrains.client.history.ChatHistoryTextFileImpl;
+import ru.geekbrains.client.history.ChatHistoryFactory;
 
 import javax.swing.*;
 import java.awt.*;
@@ -107,7 +108,7 @@ public class ChatMainWindow extends JFrame implements MessageReciever {
 
         this.network.requestConnectedUserList();
         try {
-            this.chatHistory = new ChatHistoryTextFileImpl(network.getLogin());
+            this.chatHistory = ChatHistoryFactory.createChatHistory(network.getLogin());
         } catch (IOException e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(ChatMainWindow.this,
